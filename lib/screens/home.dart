@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minute_keeper/util/reminder.dart';
 import 'package:minute_keeper/widgets/reminder_card.dart';
 import 'edit_reminder.dart';
+import 'package:minute_keeper/models/app_state.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,22 +10,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Reminder> reminders;
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           child: Icon(
             Icons.add,
             size: 32.0,
           ),
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => EditReminderScreen()));
+          onPressed: () async {
+            final result = await Navigator.push(context,
+                MaterialPageRoute(
+                    builder: (context) => EditReminderScreen.newReminder()));
+
+            _getReminders(context).add(result);
           },
         ),
-        appBar: AppBar(title: Text("Minute Keeper")),
+        appBar: AppBar(
+          title: Text(
+            "Minute Keeper",
+            style: Theme.of(context).textTheme.title,
+          )
+        ),
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
@@ -42,10 +51,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: ListView.builder(
-          itemCount: 6,
+          itemCount: _getReminders(context).length,
           itemBuilder: (BuildContext context, int index) {
-            return ReminderCard(Reminder(name: "I am a little boy with big dreams"));
+            return ReminderCard(_getReminders(context)[index]);
           },
         ));
   }
+
+  List<Reminder> _getReminders(BuildContext context) {
+    return AppState.of(context).reminderList;
+  }
+
 }

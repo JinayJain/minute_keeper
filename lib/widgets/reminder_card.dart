@@ -11,10 +11,11 @@ class ReminderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
+      onTap: () async {
+        final result = await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => EditReminderScreen())
+          MaterialPageRoute(builder:
+              (context) => EditReminderScreen(this._reminder))
         );
       },
       child: Container(
@@ -28,12 +29,12 @@ class ReminderCard extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(16.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).primaryColor,
-                      blurRadius: 2.0,
-
+                      color: Theme.of(context).primaryColorDark,
+                      blurRadius: 3.0,
+                      offset: Offset(3, 3)
                     )
                   ]
                 ),
@@ -60,7 +61,7 @@ class ReminderCard extends StatelessWidget {
               alignment: FractionalOffset(0.5, 0.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorLight,
+                  color: Theme.of(context).accentColor,
                   borderRadius: BorderRadius.circular(16.0),
                   boxShadow: [
                     BoxShadow(
@@ -72,7 +73,7 @@ class ReminderCard extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
                 child: Text(
                   _reminder.name,
-                  style: Theme.of(context).textTheme.headline,
+                  style: Theme.of(context).textTheme.subtitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
