@@ -7,9 +7,9 @@ class Reminder {
   TimeOfDay startTime;
   TimeOfDay endTime;
 
-  Reminder({
-    this.name = "New Reminder",
-    this.frequency = 30, 
-    this.startTime = const TimeOfDay(hour: 0, minute: 0), 
-    this.endTime = const TimeOfDay(hour: 23, minute: 59)});
+  Reminder(
+      {this.name = "New Reminder",
+      this.frequency = 30,
+      this.startTime = const TimeOfDay(hour: 0, minute: 0),
+      this.endTime = const TimeOfDay(hour: 23, minute: 59)});
 }

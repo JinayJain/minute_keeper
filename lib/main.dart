@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:minute_keeper/screens/home.dart';
+import 'package:provider/provider.dart';
 import 'models/app_state.dart';
 
 void main() => runApp(MyApp());
@@ -8,13 +9,13 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-
-      theme: _buildDarkTheme(),
-      title: 'Minute Keeper',
-      home: AppState(
-        child: HomeScreen()
-      )
+    return ChangeNotifierProvider<AppState>(
+      builder: (_) => AppState(),
+      child: MaterialApp(
+        theme: _buildDarkTheme(),
+        title: 'Minute Keeper',
+        home: HomeScreen()
+      ),
     );
   }
 }
@@ -62,10 +63,29 @@ ThemeData _buildDarkTheme(){
 
     scaffoldBackgroundColor: primaryColorLight,
 
+    sliderTheme: SliderThemeData(
+      activeTrackColor: accentColor,
+      inactiveTrackColor: primaryColor,
+      thumbColor: secondaryAccent,
+      overlayColor: accentColor.withOpacity(0.25),
+    ),
+
     inputDecorationTheme: InputDecorationTheme(
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: primaryColor
+        )
+      ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0)
       ),
+    ),
+    
+    buttonTheme: ButtonThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0)
+      ),
+      buttonColor: primaryColorDark
     ),
 
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -73,6 +93,13 @@ ThemeData _buildDarkTheme(){
               borderRadius: BorderRadius.circular(16.0)
       ),
       elevation: 8.0
+    ),
+
+    dialogTheme: DialogTheme(
+      backgroundColor: primaryColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0)
+      )
     ),
 
     canvasColor: primaryColor,
@@ -86,6 +113,5 @@ TextTheme _buildTextTheme(TextTheme base){
     title: TextStyle(fontFamily: 'Raleway'),
     subtitle: TextStyle(fontFamily: 'Raleway', color: darkTextColor, fontSize: 16.0),
     body1: TextStyle(color: lightTextColor),
-
   );
 }
