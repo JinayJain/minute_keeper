@@ -1,16 +1,17 @@
-# minute_keeper
+# Minute Keeper
 
-A new Flutter project.
+A Flutter application to keep track of your repetitive chores every day.
 
-## Getting Started
+Example uses:
 
-This project is a starting point for a Flutter application.
+- Drink water every hour
+- Stand up and take a walk every 30 minutes
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![Main Screen](https://filebin.net/jinay-uploads/yadshot-1563417158.png?t=ya94art6)
+![Edit Reminder](https://filebin.net/jinay-uploads/yadshot-1563417201.png?t=xhefx9xe)
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+---
+
+Created by Jinay Jain. 2019
