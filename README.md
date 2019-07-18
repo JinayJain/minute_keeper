@@ -9,8 +9,8 @@ Example uses:
 
 ## Screenshots
 
-![Main Screen](https://filebin.net/jinay-uploads/yadshot-1563417158.png?t=ya94art6)
-![Edit Reminder](https://filebin.net/jinay-uploads/yadshot-1563417201.png?t=xhefx9xe)
+![Main Screen](https://raw.githubusercontent.com/JinayJain/minute_keeper/master/screenshots/screen1.png)
+![Edit Reminder](https://raw.githubusercontent.com/JinayJain/minute_keeper/master/screenshots/screen2.png)
 
 ---
 
