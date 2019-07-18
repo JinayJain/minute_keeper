@@ -13,6 +13,10 @@ class AppState with ChangeNotifier {
       UnmodifiableListView(_reminderList);
 
   AppState() {
+    _initNotifications();
+  }
+
+  void _initNotifications() async {
     notifier = new FlutterLocalNotificationsPlugin();
 
     var initializationSettingsAndroid =
@@ -20,12 +24,85 @@ class AppState with ChangeNotifier {
     var initializationSettingsIOS = IOSInitializationSettings();
     var initializationSettings = new InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
-    notifier.initialize(initializationSettings);
+    notifier.initialize(initializationSettings,
+        onSelectNotification: handlePayload);
 
-    // TODO setup notification scheduling system
+    // Daily confirmation notification
+
+    var dailyTime = Time(8, 0, 0);
+
+    var androidDailySettings = new AndroidNotificationDetails(
+        'dailyNotifier',
+        'Daily Notifications',
+        'Confirms if you want to schedule notifications for the day');
+    var iOSDailySettings = new IOSNotificationDetails();
+    var dailySettings =
+        NotificationDetails(androidDailySettings, iOSDailySettings);
+
+    await notifier
+        .showDailyAtTime(
+            0,
+            'Schedule Reminders?',
+            'Tap this notification to schedule today\'s reminders',
+            dailyTime,
+            dailySettings,
+            payload: 'daily')
+        .then((_) {
+      print("Scheduled daily notification "
+          "for ${dailyTime.hour}:${dailyTime.minute}:${dailyTime.second}");
+    });
   }
 
-  void add(Reminder r) async {
+  Future handlePayload(String payload) {
+    print('Got the payload ${payload}!');
+
+    if (payload == 'daily') {
+      scheduleNotifications();
+    }
+  }
+
+  void scheduleNotifications() {
+    var androidDailySettings = new AndroidNotificationDetails('recurring',
+        'Repeating', 'Recurring reminders that the users sets within the app');
+    var iOSDailySettings = new IOSNotificationDetails();
+    var notifSettings =
+        NotificationDetails(androidDailySettings, iOSDailySettings);
+
+    int notifId = 1;
+
+    // TODO setup full scheduling system
+    for (Reminder reminder in this._reminderList) {
+      DateTime schedulingTime = _toDateTime(reminder.startTime);
+      DateTime endTime = _toDateTime(reminder.endTime);
+
+      while (schedulingTime.isBefore(endTime) ||
+          schedulingTime.isAtSameMomentAs(endTime)) {
+        if (schedulingTime.isAfter(DateTime.now())) {
+          this.notifier.schedule(notifId, reminder.name,
+              'Tap to view reminder.', schedulingTime, notifSettings);
+
+          notifId++;
+
+          print("${reminder.name} at "
+              "${schedulingTime.hour}:${schedulingTime.minute}");
+        }
+
+        schedulingTime =
+            schedulingTime.add(Duration(minutes: reminder.frequency));
+      }
+
+      print("Scheduled ${reminder.name}");
+    }
+
+    print("Finished scheduling!");
+  }
+
+  DateTime _toDateTime(TimeOfDay t) {
+    final DateTime now = DateTime.now();
+    return new DateTime(now.year, now.month, now.day, t.hour, t.minute);
+  }
+
+  void add(Reminder r) {
     _reminderList.add(r);
     notifyListeners();
   }

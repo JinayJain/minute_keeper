@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:minute_keeper/util/reminder.dart';
 import 'package:minute_keeper/models/app_state.dart';
+import 'package:minute_keeper/util/reminder.dart';
 import 'package:provider/provider.dart';
 
 class EditReminderScreen extends StatefulWidget {
-
   final int reminderIndex;
 
-  EditReminderScreen({ Key key, this.reminderIndex = -1})
-          : super(key: key);
+  EditReminderScreen({Key key, this.reminderIndex = -1}) : super(key: key);
 
   @override
   _EditReminderScreenState createState() => _EditReminderScreenState();
@@ -43,15 +41,14 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
         padding: EdgeInsets.all(16.0),
         child: ListView(
           children: <Widget>[
-            TextField( // TODO add empty field and other validation to this
+            TextField(
+              // TODO add empty field and other validation to this
               autocorrect: true,
               autofocus: true,
               controller: _nameController,
               textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
-                labelText: "Name",
-                hintText: _getName(context)
-              ),
+                  labelText: "Name", hintText: _getName(context)),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -69,13 +66,11 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                           child: Text("${startTime.format(context)}"),
                           onPressed: () {
                             final selectedTime = showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.now()
-                            );
+                                context: context, initialTime: TimeOfDay.now());
 
                             selectedTime.then((value) {
                               setState(() {
-                                if(value != null){
+                                if (value != null) {
                                   this.startTime = value;
                                 }
                               });
@@ -87,28 +82,23 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                           child: Text("${endTime.format(context)}"),
                           onPressed: () {
                             final selectedTime = showTimePicker(
-                                    context: context,
-                                    initialTime: TimeOfDay.now()
-                            );
+                                context: context, initialTime: TimeOfDay.now());
 
                             selectedTime.then((value) {
                               setState(() {
-                                if(value != null){
+                                if (value != null) {
                                   this.endTime = value;
                                 }
                               });
                             });
                           },
                         )
-
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -119,9 +109,9 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                 Flexible(
                   flex: 9,
                   child: Slider(
-                    min: 1,
+                    min: 10,
                     max: 120,
-                    divisions: 24,
+                    divisions: 22,
                     value: this.frequency.toDouble(),
                     onChanged: (newValue) {
                       setState(() {
@@ -131,46 +121,41 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                   ),
                 ),
                 Flexible(
-                  flex: 2,
-                  child: Text(
-                    "${this.frequency} min",
-                    style: Theme.of(context).textTheme.subhead,
-                  )
-                ),
+                    flex: 2,
+                    child: Text(
+                      "${this.frequency} min",
+                      style: Theme.of(context).textTheme.subhead,
+                    )),
               ],
             ),
-
           ],
         ),
       ),
     );
   }
 
-  void _submitReminder(BuildContext context){
-
+  void _submitReminder(BuildContext context) {
     final appState = Provider.of<AppState>(context);
 
     Reminder newReminder = Reminder(
-      name: _nameController.text,
-      startTime: this.startTime,
-      endTime: this.endTime,
-      frequency: this.frequency
-    );
+        name: _nameController.text,
+        startTime: this.startTime,
+        endTime: this.endTime,
+        frequency: this.frequency);
 
-    if(this.widget.reminderIndex == -1){
+    if (this.widget.reminderIndex == -1) {
       appState.add(newReminder);
     } else {
       appState.set(this.widget.reminderIndex, newReminder);
     }
 
     Navigator.pop(context);
-
   }
 
-  String _getName(BuildContext context){
+  String _getName(BuildContext context) {
     final appState = Provider.of<AppState>(context);
 
-    if(widget.reminderIndex != -1) {
+    if (widget.reminderIndex != -1) {
       return appState.reminders[widget.reminderIndex].name;
     } else {
       return "My Reminder";

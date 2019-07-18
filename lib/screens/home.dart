@@ -26,10 +26,19 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
         appBar: AppBar(
-            title: Text(
-          "Minute Keeper",
-          style: Theme.of(context).textTheme.title,
-        )),
+          title: Text(
+            "Minute Keeper",
+            style: Theme.of(context).textTheme.title,
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.alarm_on),
+              onPressed: () {
+                Provider.of<AppState>(context).scheduleNotifications();
+              },
+            )
+          ],
+        ),
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
