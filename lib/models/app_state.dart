@@ -1,8 +1,11 @@
 import 'dart:collection';
+import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:minute_keeper/util/reminder.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AppState with ChangeNotifier {
   FlutterLocalNotificationsPlugin notifier;
@@ -13,7 +16,24 @@ class AppState with ChangeNotifier {
       UnmodifiableListView(_reminderList);
 
   AppState() {
+    _getStoredReminders();
     _initNotifications();
+  }
+
+  void _getStoredReminders () async {
+    var storedFile = await _localFile;
+
+    storedFile.readAsString().then((value) {
+      var decoded = jsonDecode(value);
+
+      for (var rem in decoded) {
+        _reminderList.add(Reminder.fromJson(rem));
+      }
+
+
+      notifyListeners();
+    });
+
   }
 
   void _initNotifications() async {
@@ -112,8 +132,34 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
-  void set(int index, Reminder r) {
+  void set(int index, Reminder r) async {
     _reminderList[index] = r;
+
     notifyListeners();
+  }
+
+  // view this
+  // https://medium.com/flutter-community/serializing-your-object-in-flutter-ab510f0b8b47
+  @override
+  void notifyListeners() async {
+    super.notifyListeners();
+    // save the files to local directory too
+
+    final file = await _localFile;
+
+    file.writeAsString(jsonEncode(_reminderList));
+    print(jsonEncode(_reminderList));
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+
+    return File('$path/reminderList.json');
   }
 }

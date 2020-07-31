@@ -34,7 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
             IconButton(
               icon: Icon(Icons.alarm_on),
               onPressed: () {
-                Provider.of<AppState>(context).scheduleNotifications();
+//                Provider.of<AppState>(context).scheduleNotifications();
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Notifications scheduled!"),
+                  )
+                );
               },
             )
           ],

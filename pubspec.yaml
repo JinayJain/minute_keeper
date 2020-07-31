@@ -1,5 +1,5 @@
 name: minute_keeper
-description: A new Flutter project.
+description: Keep track of your basic tasks in a very busy life.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -20,6 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^3.0.0+1
+  path_provider: ^1.1.2
   flutter_local_notifications: ^0.7.1+3
 
   # The following adds the Cupertino Icons font to your application.
